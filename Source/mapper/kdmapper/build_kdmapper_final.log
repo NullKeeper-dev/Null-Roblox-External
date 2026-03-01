@@ -1,0 +1,33 @@
+MSBuild version 17.14.40+3e7442088 for .NET Framework
+Build started 2/18/2026 6:31:12 PM.
+
+Project "c:\Users\oNullr\Downloads\Compressed\Null External\kdmapper\kdmapper\kdmapper.vcxproj" on node 1 (Build target(s)).
+PrepareForBuild:
+  Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+InitializeBuildStatus:
+  Touching "c:\Users\oNullr\Downloads\Compressed\Null External\kdmapper\kdmapper\Intermediate\kdmapper\kdmapper.tlog\unsuccessfulbuild".
+ClCompile:
+  All outputs are up-to-date.
+Link:
+  C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\HostX86\x64\link.exe /ERRORREPORT:QUEUE /OUT:"c:\Users\oNullr\Downloads\Compressed\Null External\kdmapper\kdmapper\x64\Release\kdmapper_Release.exe" /NOLOGO version.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='requireAdministrator' uiAccess='false'" /manifest:embed /DEBUG:FULL /PDB:"c:\Users\oNullr\Downloads\Compressed\Null External\kdmapper\kdmapper\x64\Release\kdmapper_Release.pdb" /OPT:REF /OPT:ICF /LTCG:incremental /LTCGOUT:"c:\Users\oNullr\Downloads\Compressed\Null External\kdmapper\kdmapper\Intermediate\kdmapper\kdmapper_Release.iobj" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"c:\Users\oNullr\Downloads\Compressed\Null External\kdmapper\kdmapper\x64\Release\kdmapper_Release.lib" /MACHINE:X64 "c:\Users\oNullr\Downloads\Compressed\Null External\kdmapper\kdmapper\Intermediate\kdmapper\intel_driver.obj"
+  "c:\Users\oNullr\Downloads\Compressed\Null External\kdmapper\kdmapper\Intermediate\kdmapper\main.obj"
+  "c:\Users\oNullr\Downloads\Compressed\Null External\kdmapper\kdmapper\Intermediate\kdmapper\kdmapper.obj"
+  "c:\Users\oNullr\Downloads\Compressed\Null External\kdmapper\kdmapper\Intermediate\kdmapper\portable_executable.obj"
+  "c:\Users\oNullr\Downloads\Compressed\Null External\kdmapper\kdmapper\Intermediate\kdmapper\service.obj"
+  "c:\Users\oNullr\Downloads\Compressed\Null External\kdmapper\kdmapper\Intermediate\kdmapper\KDSymbolsHandler.obj"
+  "c:\Users\oNullr\Downloads\Compressed\Null External\kdmapper\kdmapper\Intermediate\kdmapper\utils.obj"
+  Generating code
+  Previous IPDB not found, fall back to full compilation.
+  All 809 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  kdmapper.vcxproj -> c:\Users\oNullr\Downloads\Compressed\Null External\kdmapper\kdmapper\x64\Release\kdmapper_Release.exe
+FinalizeBuildStatus:
+  Deleting file "c:\Users\oNullr\Downloads\Compressed\Null External\kdmapper\kdmapper\Intermediate\kdmapper\kdmapper.tlog\unsuccessfulbuild".
+  Touching "c:\Users\oNullr\Downloads\Compressed\Null External\kdmapper\kdmapper\Intermediate\kdmapper\kdmapper.tlog\kdmapper.lastbuildstate".
+Done Building Project "c:\Users\oNullr\Downloads\Compressed\Null External\kdmapper\kdmapper\kdmapper.vcxproj" (Build target(s)).
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:01.20

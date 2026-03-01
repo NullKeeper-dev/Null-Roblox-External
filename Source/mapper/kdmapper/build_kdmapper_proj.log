@@ -1,0 +1,33 @@
+MSBuild version 17.14.40+3e7442088 for .NET Framework
+Build started 2/18/2026 6:29:51 PM.
+
+Project "c:\Users\oNullr\Downloads\Compressed\Null External\kdmapper\kdmapper\kdmapper.vcxproj" on node 1 (Rebuild target(s)).
+CoreClean:
+  Creating directory "c:\Users\oNullr\Downloads\Compressed\Null External\kdmapper\kdmapper\Intermediate\kdmapper\".
+PrepareForBuild:
+  Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+  Creating directory "c:\Users\oNullr\Downloads\Compressed\Null External\kdmapper\kdmapper\x64\Release\".
+  Creating directory "c:\Users\oNullr\Downloads\Compressed\Null External\kdmapper\kdmapper\Intermediate\kdmapper\kdmapper.tlog\".
+InitializeBuildStatus:
+  Creating "c:\Users\oNullr\Downloads\Compressed\Null External\kdmapper\kdmapper\Intermediate\kdmapper\kdmapper.tlog\unsuccessfulbuild" because "AlwaysCreate" was specified.
+  Touching "c:\Users\oNullr\Downloads\Compressed\Null External\kdmapper\kdmapper\Intermediate\kdmapper\kdmapper.tlog\unsuccessfulbuild".
+ClCompile:
+  C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\HostX86\x64\CL.exe /c /Zi /nologo /W4 /WX- /diagnostics:column /sdl /MP /O2 /Oi /GL /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++17 /permissive- /Fo"c:\Users\oNullr\Downloads\Compressed\Null External\kdmapper\kdmapper\Intermediate\kdmapper\\" /Fd"c:\Users\oNullr\Downloads\Compressed\Null External\kdmapper\kdmapper\Intermediate\kdmapper\vc143.pdb" /external:W4 /Gd /TP /FC /errorReport:queue intel_driver.cpp main.cpp kdmapper.cpp portable_executable.cpp service.cpp KDSymbolsHandler.cpp utils.cpp
+  intel_driver.cpp
+  main.cpp
+  kdmapper.cpp
+  portable_executable.cpp
+  service.cpp
+  KDSymbolsHandler.cpp
+  utils.cpp
+Link:
+  C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\HostX86\x64\link.exe /ERRORREPORT:QUEUE /OUT:"c:\Users\oNullr\Downloads\Compressed\Null External\kdmapper\kdmapper\x64\Release\kdmapper_Release.exe" /NOLOGO version.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='requireAdministrator' uiAccess='false'" /manifest:embed /DEBUG:FULL /PDB:"c:\Users\oNullr\Downloads\Compressed\Null External\kdmapper\kdmapper\x64\Release\kdmapper_Release.pdb" /OPT:REF /OPT:ICF /LTCG:incremental /LTCGOUT:"c:\Users\oNullr\Downloads\Compressed\Null External\kdmapper\kdmapper\Intermediate\kdmapper\kdmapper_Release.iobj" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"c:\Users\oNullr\Downloads\Compressed\Null External\kdmapper\kdmapper\x64\Release\kdmapper_Release.lib" /MACHINE:X64 "c:\Users\oNullr\Downloads\Compressed\Null External\kdmapper\kdmapper\Intermediate\kdmapper\intel_driver.obj"
+  "c:\Users\oNullr\Downloads\Compressed\Null External\kdmapper\kdmapper\Intermediate\kdmapper\main.obj"
+  "c:\Users\oNullr\Downloads\Compressed\Null External\kdmapper\kdmapper\Intermediate\kdmapper\kdmapper.obj"
+  "c:\Users\oNullr\Downloads\Compressed\Null External\kdmapper\kdmapper\Intermediate\kdmapper\portable_executable.obj"
+  "c:\Users\oNullr\Downloads\Compressed\Null External\kdmapper\kdmapper\Intermediate\kdmapper\service.obj"
+  "c:\Users\oNullr\Downloads\Compressed\Null External\kdmapper\kdmapper\Intermediate\kdmapper\KDSymbolsHandler.obj"
+  "c:\Users\oNullr\Downloads\Compressed\Null External\kdmapper\kdmapper\Intermediate\kdmapper\utils.obj"
+  Generating code
+  Previous IPDB not found, fall back to full compilation.
+Attempting to cancel the build...
