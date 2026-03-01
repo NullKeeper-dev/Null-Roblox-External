@@ -690,12 +690,15 @@ void Roblox::Update() {
                     pd.health = Driver::Read<float>(g_pid, cp.humanoid + Offsets::Humanoid::Health);
                     pd.maxHealth = Driver::Read<float>(g_pid, cp.humanoid + Offsets::Humanoid::MaxHealth);
                     
-                    // DEBUG: Log health values for troubleshooting
-                    static DWORD lastHealthLog = 0;
-                    if (GetTickCount() - lastHealthLog > 2000) {
-                        Console::Log("[Debug] Player: %s | Humanoid: 0x%llX | HP: %.1f / %.1f", 
-                                     pd.name.c_str(), cp.humanoid, pd.health, pd.maxHealth);
-                        lastHealthLog = GetTickCount();
+                    // Force refresh humanoid if health is 0 but character is valid (potential stale humanoid)
+                    if (pd.health <= 0.0f && pd.valid) {
+                        uintptr_t newHumanoid = FindChildByClass(g_pid, currentCharacter, "Humanoid");
+                        if (newHumanoid && newHumanoid != cp.humanoid) {
+                            cp.humanoid = newHumanoid;
+                            pd.humanoid = newHumanoid;
+                            pd.health = Driver::Read<float>(g_pid, cp.humanoid + Offsets::Humanoid::Health);
+                            pd.maxHealth = Driver::Read<float>(g_pid, cp.humanoid + Offsets::Humanoid::MaxHealth);
+                        }
                     }
 
                     // Fallback: If health is 0 but we know they are alive, or if reading failed (returns 0 or NaN)
@@ -706,7 +709,17 @@ void Roblox::Update() {
                     pd.isAlive = (pd.health > 0.1f) && (humanoidState != 15);
                     pd.isRagdoll = (humanoidState == 1 || humanoidState == 14);
                 } else {
-                    pd.health = 100.0f; pd.maxHealth = 100.0f; pd.isAlive = true; pd.isRagdoll = false;
+                    // Try to find humanoid if missing
+                    uintptr_t hum = FindChildByClass(g_pid, currentCharacter, "Humanoid");
+                    if (hum) {
+                        cp.humanoid = hum;
+                        pd.humanoid = hum;
+                        pd.health = Driver::Read<float>(g_pid, hum + Offsets::Humanoid::Health);
+                        pd.maxHealth = Driver::Read<float>(g_pid, hum + Offsets::Humanoid::MaxHealth);
+                        pd.isAlive = (pd.health > 0.1f);
+                    } else {
+                        pd.health = 100.0f; pd.maxHealth = 100.0f; pd.isAlive = true; pd.isRagdoll = false;
+                    }
                 }
                 tempPlayers.push_back(pd);
             }
@@ -727,7 +740,14 @@ uintptr_t Roblox::GetLocalPlayerTeam() {
       Driver::Read<uintptr_t>(g_pid, g_playersService + Offsets::Player::LocalPlayer);
   if (!lp)
     return 0;
+  
+  // Team is often a pointer to a Team object
   return Driver::Read<uintptr_t>(g_pid, lp + Offsets::Player::Team);
+}
+
+uintptr_t Roblox::GetPlayerTeam(uintptr_t playerPtr) {
+    if (!g_pid || !playerPtr) return 0;
+    return Driver::Read<uintptr_t>(g_pid, playerPtr + Offsets::Player::Team);
 }
 
 /* ── Multithreaded Scanner ───────────────────────────── */
@@ -799,7 +819,17 @@ static void ScannerLoop() {
                         newP.ptr = plr;
                         uintptr_t namePtr = Driver::Read<uintptr_t>(g_pid, plr + Offsets::Instance::Name);
                         newP.name = namePtr ? Driver::ReadRobloxString(g_pid, namePtr, 0) : "Unknown";
+                        // Initialize team
+                        newP.team = Driver::Read<uintptr_t>(g_pid, plr + Offsets::Player::Team);
                         g_playerCache.push_back(newP);
+                    }
+                } else {
+                    // Update team for existing players in cache occasionally
+                    for (auto& cp : g_playerCache) {
+                        if (cp.ptr == plr) {
+                            cp.team = Driver::Read<uintptr_t>(g_pid, plr + Offsets::Player::Team);
+                            break;
+                        }
                     }
                 }
             }

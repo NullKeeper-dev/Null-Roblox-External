@@ -8,6 +8,7 @@
 #include "../include/imgui.h"
 #include "../include/imgui_internal.h"
 #include "../include/aimbot.h"
+#include "../include/driver.h"
 #include "../Offsets/offsets.hpp"
 #include "../include/menu.h"
 #include "../include/overlay.h"
@@ -245,7 +246,8 @@ void ESP::Render() {
 
     if (g_settings.teamCheck) {
       uintptr_t localTeam = Roblox::GetLocalPlayerTeam();
-      if (player.team != 0 && player.team == localTeam)
+      uintptr_t playerTeam = Roblox::GetPlayerTeam(player.ptr);
+      if (playerTeam != 0 && playerTeam == localTeam)
         continue;
     }
 
@@ -404,9 +406,18 @@ void ESP::Render() {
       float barW = g_settings.healthWidth;
       float barX = boxX - barW - 3.0f;
       
+      // Real-time health update: Re-read health from humanoid if pointer is valid
+      float currentHealth = player.health;
+      float currentMaxHealth = player.maxHealth;
+      
+      if (player.humanoid) {
+          currentHealth = Driver::Read<float>(Roblox::GetPID(), player.humanoid + Offsets::Humanoid::Health);
+          currentMaxHealth = Driver::Read<float>(Roblox::GetPID(), player.humanoid + Offsets::Humanoid::MaxHealth);
+      }
+
       // Ensure we don't divide by zero and clamp the percentage
-      float maxH = (player.maxHealth > 0.1f) ? player.maxHealth : 100.0f;
-      float healthPct = player.health / maxH;
+      float maxH = (currentMaxHealth > 0.1f) ? currentMaxHealth : 100.0f;
+      float healthPct = currentHealth / maxH;
       
       if (healthPct > 1.0f) healthPct = 1.0f;
       if (healthPct < 0.0f) healthPct = 0.0f;
@@ -419,7 +430,7 @@ void ESP::Render() {
       /* Health fill (from bottom up) */
       draw->AddRectFilled(ImVec2(barX, boxY + boxH - filledH),
                           ImVec2(barX + barW, boxY + boxH),
-                          HealthColor(player.health, maxH));
+                          HealthColor(currentHealth, maxH));
       /* Outline */
       draw->AddRect(ImVec2(barX, boxY), ImVec2(barX + barW, boxY + boxH),
                     IM_COL32(0, 0, 0, 255));

@@ -107,13 +107,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
       Console::Log("Menu %s", Menu::IsVisible() ? "shown" : "hidden");
     }
 
-    /* Check Player Refresh hotkey */
-    if (ESP::Settings().refreshKey != 0 &&
-        (GetAsyncKeyState(ESP::Settings().refreshKey) & 1)) {
-      Roblox::ForceRefreshCache();
-    }
-
-    if (GetAsyncKeyState(VK_END) & 1) {
+    /* Check Self Destruct hotkey */
+    if (g_selfDestructKey != 0 && (GetAsyncKeyState(g_selfDestructKey) & 1)) {
       running = false;
       break;
     }

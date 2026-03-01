@@ -118,10 +118,20 @@ void Update() {
   /* 1. Target Selection / Locking */
   if (lockedPlayerPtr != 0) {
     for (const auto &plr : players) {
-      if (plr.ptr == lockedPlayerPtr && plr.valid && plr.health > 0) {
+      if (plr.ptr == lockedPlayerPtr && plr.valid) {
+        if (settings.checkAlive && !plr.isAlive) {
+          lockedPlayerPtr = 0;
+          break;
+        }
+        if (settings.checkRagdoll && plr.isRagdoll) {
+          lockedPlayerPtr = 0;
+          break;
+        }
+
         if (settings.teamCheck) {
           uintptr_t localTeam = Roblox::GetLocalPlayerTeam();
-          if (plr.team != 0 && plr.team == localTeam) {
+          uintptr_t playerTeam = Roblox::GetPlayerTeam(plr.ptr);
+          if (playerTeam != 0 && playerTeam == localTeam) {
             lockedPlayerPtr = 0;
             break;
           }
@@ -172,15 +182,22 @@ void Update() {
     std::vector<TargetInfo> potentialTargets;
 
     for (const auto &plr : players) {
-      if (plr.isLocalPlayer || !plr.valid || plr.health <= 0)
+      if (plr.isLocalPlayer || !plr.valid)
         continue;
+      
+      if (settings.checkAlive && !plr.isAlive)
+        continue;
+      if (settings.checkRagdoll && plr.isRagdoll)
+        continue;
+
       if (plr.ptr == Roblox::GetLastCharacter() &&
           Roblox::GetLastCharacter() != 0)
         continue;
 
       if (settings.teamCheck) {
         uintptr_t localTeam = Roblox::GetLocalPlayerTeam();
-        if (plr.team != 0 && plr.team == localTeam)
+        uintptr_t playerTeam = Roblox::GetPlayerTeam(plr.ptr);
+        if (playerTeam != 0 && playerTeam == localTeam)
           continue;
       }
 

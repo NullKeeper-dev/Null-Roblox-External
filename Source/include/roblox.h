@@ -59,4 +59,5 @@ HWND GetWindow();
 
 std::string GetLocalPlayerName();
 uintptr_t GetLastCharacter();
+uintptr_t GetPlayerTeam(uintptr_t playerPtr);
 } // namespace Roblox

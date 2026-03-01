@@ -25,7 +25,8 @@ static bool g_visible = false;
 static int g_tab = 0; // 0: Aim, 1: Visuals, 2: Misc, 3: Settings
 static int g_prevTab = 0;
 static float g_tabAlpha = 1.0f;
-static int g_toggleKey = VK_INSERT;
+int g_toggleKey = VK_INSERT;
+int g_selfDestructKey = VK_END;
 
 /* ── Animation System ────────────────────────────────────── */
 static float g_menuAlpha = 0.0f;
@@ -125,6 +126,7 @@ void Save(const std::string &name) {
   file << "theme_acc_g " << g_accentColor.y << "\n";
   file << "theme_acc_b " << g_accentColor.z << "\n";
   file << "menu_toggle " << g_toggleKey << "\n";
+  file << "self_destruct_key " << g_selfDestructKey << "\n";
 
   file.close();
 }
@@ -232,6 +234,8 @@ void Load(const std::string &name) {
       file >> g_accentColor.z;
     else if (key == "menu_toggle")
       file >> g_toggleKey;
+    else if (key == "self_destruct_key")
+      file >> g_selfDestructKey;
     else if (key == "debug_mode") {
       file >> ESP::Settings().debugMode;
       Console::SetVisible(ESP::Settings().debugMode);
@@ -453,10 +457,7 @@ bool KeybindButton(const char *label, int *k) {
   else
     sprintf_s(buf, "%s: [%s]###%s", label, Aimbot::GetKeyName(*k), label);
 
-  ImVec2 size = ImVec2(-1, 24);
-  ImGuiWindow* window = ImGui::GetCurrentWindow();
-  ImGuiID id = window->GetID(buf);
-  ImRect bb(window->DC.CursorPos, window->DC.CursorPos + size);
+  ImVec2 size = ImVec2(-1, 30); // Increased height and using negative width for full area
   
   if (ImGui::Button(buf, size)) {
     if (g_activeBindLabel == nullptr)
@@ -621,6 +622,8 @@ void Menu::Render() {
     CustomSlider("FOV Radius", &aim.fov, 10.0f, 1000.0f, "%.0f");
     CustomSlider("Smoothness", &aim.smooth, 1.0f, 50.0f, "%.1f");
     CustomSlider("Vertical Offset", &aim.heightOffset, -10.0f, 10.0f, "%.1f");
+    CustomSwitch("Check Alive", &aim.checkAlive);
+    CustomSwitch("Check Ragdoll", &aim.checkRagdoll);
     CustomSwitch("Team Check", &aim.teamCheck);
 
     ImGui::Spacing();
@@ -725,42 +728,28 @@ void Menu::Render() {
     }
     CustomSwitch("Hide Launcher", &ESP::Settings().hideLauncher);
 
-    if (ImGui::Button("Self Destruct", ImVec2(-1, 24))) {
+    if (ImGui::Button("Self Destruct##button", ImVec2(-1, 30))) {
         Roblox::StopScanner();
         exit(0);
     }
 
     SectionHeader("Binds");
-    static bool bindingMenu = false;
-    char toggleBuf[64];
-    if (bindingMenu)
-      sprintf_s(toggleBuf, "Press any key...");
-    else
-      sprintf_s(toggleBuf, "Menu Key: [%s]", Aimbot::GetKeyName(g_toggleKey));
-    if (ImGui::Button(toggleBuf, ImVec2(-1, 24)))
-      bindingMenu = true;
-    if (bindingMenu) {
-      for (int i = 1; i < 0xFE; i++) {
-        if (GetAsyncKeyState(i) & 0x8000) {
-          if (i != VK_ESCAPE)
-            g_toggleKey = i;
-          bindingMenu = false;
-          break;
-        }
-      }
-    }
+    KeybindButton("Menu Key", &g_toggleKey);
+    KeybindButton("Self Destruct", &g_selfDestructKey);
 
     ImGui::NextColumn();
     SectionHeader("Configs");
     static char cfg_name[64] = "default";
     ImGui::PushItemWidth(-1);
-    ImGui::InputText("##cfgname", cfg_name, sizeof(cfg_name));
+    if (ImGui::InputText("##cfgname", cfg_name, sizeof(cfg_name), ImGuiInputTextFlags_EnterReturnsTrue)) {
+        // Optional: handle enter key if needed
+    }
     ImGui::PopItemWidth();
-    if (ImGui::Button("Save",
-                      ImVec2(ImGui::GetContentRegionAvail().x * 0.5f - 5, 24)))
+    float buttonWidth = (ImGui::GetContentRegionAvail().x - ImGui::GetStyle().ItemSpacing.x) * 0.5f;
+    if (ImGui::Button("Save", ImVec2(buttonWidth, 30)))
       Config::Save(cfg_name);
     ImGui::SameLine();
-    if (ImGui::Button("Load", ImVec2(ImGui::GetContentRegionAvail().x, 24)))
+    if (ImGui::Button("Load", ImVec2(buttonWidth, 30)))
       Config::Load(cfg_name);
 
     ImGui::Spacing();

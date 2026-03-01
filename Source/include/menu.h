@@ -3,6 +3,9 @@
  * menu.h - ImGui menu interface
  */
 
+extern int g_toggleKey;
+extern int g_selfDestructKey;
+
 namespace Menu {
 /* Toggle menu visibility */
 void Toggle();

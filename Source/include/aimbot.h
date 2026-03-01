@@ -22,6 +22,8 @@ struct Settings {
   float fovCol[3] = {1.0f, 1.0f, 1.0f};
   bool rainbowFov = false;
   float heightOffset = 0.0f; /* Vertical offset Adjustment */
+  bool checkAlive = true;
+  bool checkRagdoll = false;
 };
 
 extern Settings settings;
