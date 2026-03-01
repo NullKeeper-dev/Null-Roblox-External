@@ -52,7 +52,7 @@ Null Roblox External demonstrates advanced C++ techniques for interacting with p
 
 ### Usage
 1. Launch Roblox.
-2. Run the `launch.bat` file.
+2. Run the `launch.bat` file as Admin.
 3. Press `INSERT` to toggle the menu.
 4. Press `END` to exit the application safely.
 
