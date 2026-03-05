@@ -705,7 +705,7 @@ void Roblox::Update() {
                     if (pd.maxHealth < 1.0f) pd.maxHealth = 100.0f;
                     
                     // Humanoid state check for ragdoll/death
-                    int humanoidState = Driver::Read<int>(g_pid, cp.humanoid + Offsets::Humanoid::GetState);
+                    int humanoidState = Driver::Read<int>(g_pid, cp.humanoid + Offsets::Humanoid::HumanoidState);
                     pd.isAlive = (pd.health > 0.1f) && (humanoidState != 15);
                     pd.isRagdoll = (humanoidState == 1 || humanoidState == 14);
                 } else {
